@@ -25,7 +25,14 @@ class User < ActiveRecord::Base
     Digest::SHA256.hexdigest("--#{salt}--#{raw_password}--")
   end
   
-  def self.authenticate(email, plain_text_password)
-    nil
+  def self.authenticate(email, plain_text_password)   
+     user = find_by_email(email)
+     return nil if user.nil?
+     if user.hashed_password==user.encrypt(plain_text_password)
+        return user
+     else 
+        return nil
+     end
   end
+            
 end
