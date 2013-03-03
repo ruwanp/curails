@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+  
+  before_filter :redirect_home_if_signed_in, only: [:new, :create]
+  before_filter :redirect_unless_authorized, only: [:edit, :update, :destroy]
+  
   def index
     @users = User.all
 
@@ -34,13 +38,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
   end
 
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
 
     respond_to do |format|
       if @user.save
@@ -56,7 +58,6 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -72,7 +73,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
@@ -80,4 +80,17 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  private
+  
+  def redirect_unless_authorized
+    @user = User.find(params[:id])
+    
+    if current_user!= @user      
+      flash[:error] = "You are not authorized to edit that user"
+      redirect_to root_path
+    end
+
+  end
+  
 end
