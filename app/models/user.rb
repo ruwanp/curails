@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
     Digest::SHA256.hexdigest("--#{salt}--#{raw_password}--")
   end
   
+  def feed(paginate_options={page: 1})
+	micro_posts.paginate(paginate_options)
+  end
+  
   def self.authenticate(email, plain_text_password)   
      user = find_by_email(email)
      return nil if user.nil?

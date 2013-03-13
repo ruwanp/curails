@@ -15,7 +15,7 @@
     <td><%= micro_post.content %></td>
     <td><%= link_to 'Show', micro_post %></td>
     <td><%= link_to 'Edit', edit_micro_post_path(micro_post) %></td>
-    <td><%= link_to 'Destroy', micro_post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Destroy', micro_post, remote:true, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
