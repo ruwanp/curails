@@ -1,8 +1,11 @@
 Info2310::Application.routes.draw do
+  get '/micro_posts/refresh'  # this must come first
   resources :micro_posts
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
+  resources :relationships, only: [:create, :destroy]
+
   
   
 
